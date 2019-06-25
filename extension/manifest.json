@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+
+  "name": "Powerschool Hypothetical Assignment",
+  "description": "Simulate grade changes with a hypothetical assignment",
+  "version": "0.0.1",
+
+  "browser_action": {
+   
+   "default_popup": "popup/options.html"
+  },
+  "permissions": [
+   "activeTab"
+   ]
+}
