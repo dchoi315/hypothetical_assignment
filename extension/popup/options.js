@@ -65,13 +65,25 @@ function makeConfig(){
 
 calcBtn.addEventListener('click', function(){
 	chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
-		
+		console.log(tabs[0].url);
 		config = makeConfig();
 		chrome.tabs.sendMessage(tabs[0].id, config, (response)=> {
 			console.log(response.grade);
 			document.getElementById('finalgrade').textContent = response.grade;
 		});;
 	});
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+
+    if(tabs[0].url.indexOf("https://ps01.bergen.org/guardian/scores.html")>=0) {
+      document.getElementById("options").style.display = "block";
+    } else{
+
+      document.getElementById("wrong_page").style.display = "block";
+    }
+  });
 });
 
 

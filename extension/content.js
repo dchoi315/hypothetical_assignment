@@ -31,10 +31,6 @@ function calculatePoints(assignments, desiredGrade, denominatorGrade){
 }
 
 function calculatePercent(assignments, desiredGrade, task_category, percentage_info){
-	// Error checking
-	// if (!(percentage_info[task_category])){
-	// 	return "Assignment Category not found in webpage";
-	// }
 	finalGrade = 0;
 	averages = getCategories(assignments);
 	assignments.forEach(tr => {
@@ -65,7 +61,6 @@ function calculatePercent(assignments, desiredGrade, task_category, percentage_i
  			answer-= stats[0];
  		}
 	}
- 	
 	return answer;
 }
 
@@ -90,8 +85,6 @@ const ob = new MutationObserver(records => {
 				sendResponse({grade : answer});
 			}
 		});
-
-		
 	}
 });
 
