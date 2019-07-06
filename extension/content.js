@@ -7,7 +7,12 @@ function getCategories(assignments){
 		allCategories.add(categoryName);
 
 	});
-	return allCategories;
+
+	categoryobj = {}
+	allCategories.forEach(item =>{
+		categoryobj[item] = [0,0];
+	});
+	return categoryobj;
 }
 
 function calculatePoints(assignments, desiredGrade, denominatorGrade){
@@ -25,22 +30,44 @@ function calculatePoints(assignments, desiredGrade, denominatorGrade){
 	return answer
 }
 
-function calculatePercent(assignments, percentage){
-
+function calculatePercent(assignments, desiredGrade, task_category, percentage_info){
+	// Error checking
+	// if (!(percentage_info[task_category])){
+	// 	return "Assignment Category not found in webpage";
+	// }
 	finalGrade = 0;
+	averages = getCategories(assignments);
 	assignments.forEach(tr => {
 		category = tr.cells[1].textContent.trim();
-		score = tr.cells[11].textContent.trim();
+		score = parseFloat(tr.cells[11].textContent.trim());
+		averages[category][0] += score;
+		averages[category][1] += 1;
 
-		finalGrade += score * (percentage[category]/100);
 	});
+ 	var averages_array = Object.entries(averages);
+ 	console.log(averages_array);
 
+ 	answer = desiredGrade;
+ 	for (const [category, stats] of averages_array){
+ 		
+ 		if (category != task_category){
 
-	return finalGrade;
+ 			answer-=(stats[0]/stats[1]) * (percentage_info[category]/100);
+ 		} else {
+ 			stats[1]+=1
+ 		}
+	}
+	console.log(answer);
+	for (const [category, stats] of averages_array){
+ 		if (category==task_category){
+ 			answer*= stats[1];
+ 			answer/= (percentage_info[category]/100);
+ 			answer-= stats[0];
+ 		}
+	}
+ 	
+	return answer;
 }
-
-
-
 
 
 const ob = new MutationObserver(records => {
@@ -56,10 +83,10 @@ const ob = new MutationObserver(records => {
 
 			if(request.gradeType == 'percent'){
 				
-				answer = calculatePercent(assignments, request.percentage);
+				answer = Math.round(calculatePercent(assignments, request.desiredGrade, request.info, request.percentage)*100)/100 + "%";
 				sendResponse({grade : answer});
 			} else{
-				answer = calculatePoints(assignments, request.desiredGrade, request.denominator);
+				answer = Math.round(calculatePoints(assignments, request.desiredGrade, request.info)*100)/100 + "/" + request.info;
 				sendResponse({grade : answer});
 			}
 		});

@@ -30,34 +30,46 @@ removeCategoryBtn.addEventListener('click', function(){
 
 pointBtn.addEventListener('click', function(){
 	document.getElementById('categories').style.display ='none';
+	document.getElementById('assignment_category').textContent = "Denominator: ";
+	
 });
 percentBtn.addEventListener('click', function(){
 	document.getElementById('categories').style.display = 'block';
+	document.getElementById('assignment_category').textContent = "Category: ";
+
 });
+function makeConfig(){
+	gradeType = document.getElementById('point').checked ? "point" : "percent";
+	config = {
+		gradeType : gradeType,
+		desiredGrade : parseFloat(document.getElementById('desiredgrade').value),
+	};
+	
+	if (gradeType == 'point')
+		config["info"] = parseFloat(document.getElementById('necessary_info').value)
+	else 
+		config["info"] = document.getElementById('necessary_info').value;
+	categories = {}
+
+	if (gradeType == 'percent'){
+		var category_table = document.getElementById('category_table');
+		var rowArray = Array.from(category_table.rows).splice(1,category_table.rows.length);
+
+		rowArray.forEach(tr => {
+			categories[tr.cells[0].getElementsByTagName('input')[0].value] = parseInt(tr.cells[1].getElementsByTagName('input')[0].value, 10);
+		});
+		config["percentage"] = categories;
+	} 
+	return config
+}
 
 calcBtn.addEventListener('click', function(){
 	chrome.tabs.query({currentWindow: true, active: true}, function (tabs){
-		gradeType =  document.getElementById('point').checked ? "point" : "percent";
-
-		config = {
-			gradeType : gradeType,
-			desiredGrade : parseFloat(document.getElementById('desiredgrade').value),
-			denominator : parseFloat(document.getElementById('denominator').value)
-		};
-		categories = {}
-
-		if (gradeType == 'percent'){
-			var category_table = document.getElementById('category_table');
-			var rowArray = Array.from(category_table.rows).splice(1,category_table.rows.length);
-
-			rowArray.forEach(tr => {
-				categories[tr.cells[0].getElementsByTagName('input')[0].value] = parseInt(tr.cells[1].getElementsByTagName('input')[0].value, 10);
-			});
-			config["percentage"] = categories;
-		} 
 		
+		config = makeConfig();
 		chrome.tabs.sendMessage(tabs[0].id, config, (response)=> {
 			console.log(response.grade);
+			document.getElementById('finalgrade').textContent = response.grade;
 		});;
 	});
 });
