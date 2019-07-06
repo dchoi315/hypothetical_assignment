@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Menu</title>
+	
 </head>
 <body>
 	<div>
@@ -15,11 +16,11 @@
 		<table class='input_tables'>
 			<tr>
 				<td>Desired Grade: </td>
-				<td><input type="text", name="desiredGrade"></td>
+				<td><input type="text" id='desiredgrade' class='field'></td>
 			</tr>
 			<tr>
 				<td>Denominator: </td>
-				<td><input type="text" name="Denominator"></td>
+				<td><input type="text" id='denominator' class='field'></td>
 
 			</tr>
 
@@ -29,16 +30,21 @@
 		<div id='categories'>
 			<h3>Categories</h3>
 			<h5>*NOTE* All categories must be typed EXACTLY as it is shown on the page</h6>
-			<button id='add' >Add Category</button>
-			<button id='remove'>Remove Category</button>
-
+			
 			<table class='input_tables' id='category_table'>
 				<tr>
-					<td><input type="text" name="Category" value='Category'></td>
-					<td><input type="text" name="percentage" value = '25%'></td>
+					<td>Category</td>
+					<td>Percentage</td>
+				</tr>
+				<tr>
+					<td><input type="text" name="Category" value='Category' class='field'></td>
+					<td><input type="text" name="percentage" value = '25' class='field'></td>
 				</tr>
 
 			</table>
+			<button id='add' >Add Category</button>
+			<button id='remove'>Remove Category</button>
+
 			
 
 
@@ -47,7 +53,7 @@
 
 		</div>
 
-		<button>Calculate</button>
+		<button id='calc'>Calculate</button>
 	</div>
 
 	<script type="text/javascript" src="options.js"></script>
