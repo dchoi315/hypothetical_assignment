@@ -30,7 +30,7 @@ function calculatePoints(assignments, desiredGrade, denominatorGrade){
 	return answer
 }
 
-function calculatePercent(assignments, desiredGrade, task_category, percentage_info){
+function calculatePercent(assignments, desiredGrade, task_category, percentage_info){			
 	finalGrade = 0;
 	averages = getCategories(assignments);
 	assignments.forEach(tr => {
